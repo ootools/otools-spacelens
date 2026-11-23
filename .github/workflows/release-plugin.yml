@@ -1,0 +1,225 @@
+name: release-plugin
+run-name: "空间透镜 插件${{ inputs.dry_run && '验证' || '发布' }} · ${{ inputs.display_version || github.ref_name }}"
+
+# 两条入口：
+#  1) 推 `v<版本>` 标签 —— 正式发布。仓库变量 OTOOLS_PUBLISH_MARKET=true 时同步上架市场，
+#     Release 与市场用的是同一个 tag（v0.1.0），资产链接不会漂移。
+#  2) 手动 dispatch —— 演练或补发。不传 source tag，Release 标签取
+#     `plugin-otools-spacelens-v<版本>`（publish-market.mjs 的默认规则）；
+#     补发市场时把 release_tag 填成已推的 `v<版本>`，即可复用同一个 Release，
+#     不会在仓库里多出一个指向同产物的标签。
+#
+# 本插件带 native sidecar（spacelensd 扫描服务）；v0.1 仅出 macos 资产并如实上报 supportMacos（uniplayer 先例），
+# 其余平台随实机验证逐个补（届时在此矩阵加 target + 交叉构建步骤）。
+on:
+  workflow_dispatch:
+    inputs:
+      display_version:
+        description: "打包版本号（留空取 plugin.json）"
+        default: ""
+      release_tag:
+        description: "复用已有标签（补发市场时填 v0.1.0，留空则自动生成 plugin-otools-spacelens-v<版本>）"
+        default: ""
+      auth_mode:
+        description: "市场认证方式"
+        type: choice
+        options: [pat, oidc, login, shared]
+        default: pat
+      publish_market:
+        description: "同步插件市场（dry-run 时仅检查配置，不上架）"
+        type: boolean
+        default: false
+      dry_run:
+        description: "仅构建和校验，不创建 Release、不提交市场"
+        type: boolean
+        default: true
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: plugin-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-15
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      packid: ${{ steps.meta.outputs.packid }}
+      release_tag: ${{ steps.meta.outputs.release_tag }}
+      publish_enabled: ${{ steps.meta.outputs.publish_enabled }}
+      market_requested: ${{ steps.meta.outputs.market_requested }}
+      market_enabled: ${{ steps.meta.outputs.market_enabled }}
+      validate_release: ${{ steps.meta.outputs.validate_release }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          # 补发时检出 release_tag 指向的提交，保证产物与已发布版本同源；
+          # 否则 main 上有新提交就会与标签指向不一致，被 release-policy 拒绝。
+          ref: ${{ inputs.release_tag || github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: service
+
+      - name: 校验版本、标签和发布开关
+        id: meta
+        env:
+          DISPLAY_VERSION: ${{ inputs.display_version }}
+          RELEASE_SOURCE_TAG: ${{ github.event_name == 'push' && github.ref_name || inputs.release_tag }}
+          EVENT_NAME: ${{ github.event_name }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          PUBLISH_MARKET: ${{ inputs.publish_market }}
+          AUTO_PUBLISH_MARKET: ${{ vars.OTOOLS_PUBLISH_MARKET || 'false' }}
+        run: node scripts/publish-market.mjs meta
+
+      - name: 安装依赖
+        run: npm ci --no-audit --no-fund
+
+      - name: 发布脚本回归测试
+        run: npm test
+
+      - name: 类型检查
+        run: npm run typecheck
+
+      - name: 构建前端产物
+        run: npx vite build
+
+      - name: cargo check 扫描服务
+        run: cargo check --release --manifest-path service/Cargo.toml
+
+      - name: 构建 spacelensd（macOS arm64）
+        run: |
+          cargo build --release --manifest-path service/Cargo.toml
+          mkdir -p bin
+          cp service/target/release/spacelensd bin/spacelensd-macos
+          chmod 755 bin/spacelensd-macos
+
+      - name: 打包插件
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+        run: node scripts/pack-plugin.mjs --platforms macos --out dist-pack --version "$VERSION"
+
+      - name: 独立验证插件包
+        run: node scripts/verify-plugin.mjs dist-pack
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oplg
+          path: dist-pack/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: 构建摘要
+        env:
+          VERSION: ${{ steps.meta.outputs.version }}
+          PACKID: ${{ steps.meta.outputs.packid }}
+          PUBLISH_ENABLED: ${{ steps.meta.outputs.publish_enabled }}
+        run: |
+          printf '### 插件构建完成\n- 插件：`%s`\n- 版本：`%s`\n- 平台：`macos (arm64)`\n- 允许正式发布：`%s`\n\n' "$PACKID" "$VERSION" "$PUBLISH_ENABLED" >> "$GITHUB_STEP_SUMMARY"
+          cat dist-pack/SHA256SUMS >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: build
+    if: ${{ needs.build.outputs.validate_release == 'true' }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.release_tag || github.ref }}
+
+      - name: 记录构建提交
+        id: commit
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: oplg
+          path: release-assets
+
+      - name: 发布前重新验证产物
+        run: node scripts/verify-plugin.mjs release-assets
+
+      - name: 检查市场凭证配置（不发送凭证、不上架）
+        if: ${{ needs.build.outputs.market_requested == 'true' }}
+        env:
+          AUTH_MODE: ${{ inputs.auth_mode || vars.XYCLOUD_AUTH_MODE || 'pat' }}
+          XYCLOUD_PAT: ${{ secrets.XYCLOUD_PAT }}
+          XYCLOUD_LOGIN_TOKEN: ${{ secrets.XYCLOUD_LOGIN_TOKEN }}
+          OTOOLS_MARKET_TOKEN: ${{ secrets.OTOOLS_MARKET_TOKEN }}
+          XYCLOUD_OIDC_ISSUER: ${{ vars.XYCLOUD_OIDC_ISSUER }}
+          XYCLOUD_PUBLISHER_ID: ${{ vars.XYCLOUD_PUBLISHER_ID }}
+          OTOOLS_MARKET_API: ${{ vars.OTOOLS_MARKET_API || 'https://otools-api.lingyun.net/api/v1/otools/plugin/publish' }}
+        run: node scripts/publish-market.mjs preflight
+
+      - name: 核验发布标签与构建提交
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+          COMMIT_SHA: ${{ steps.commit.outputs.sha }}
+        run: node scripts/release-policy.mjs
+
+      - name: 发布 GitHub Release
+        if: ${{ needs.build.outputs.publish_enabled == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+          COMMIT_SHA: ${{ steps.commit.outputs.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --target "$COMMIT_SHA" \
+              --title "空间透镜 插件 v${RELEASE_VERSION}" \
+              --notes "${{ github.event.repository.name }} v${RELEASE_VERSION}"
+          fi
+          gh release upload "$RELEASE_TAG" release-assets/*.oplg --clobber
+
+      # OIDC 获取和使用在同一进程完成，秘密不经过 job outputs 或 artifact。
+      - name: 授权并提交市场
+        if: ${{ needs.build.outputs.market_enabled == 'true' }}
+        env:
+          AUTH_MODE: ${{ inputs.auth_mode || vars.XYCLOUD_AUTH_MODE || 'pat' }}
+          XYCLOUD_PAT: ${{ secrets.XYCLOUD_PAT }}
+          XYCLOUD_LOGIN_TOKEN: ${{ secrets.XYCLOUD_LOGIN_TOKEN }}
+          OTOOLS_MARKET_TOKEN: ${{ secrets.OTOOLS_MARKET_TOKEN }}
+          XYCLOUD_OIDC_ISSUER: ${{ vars.XYCLOUD_OIDC_ISSUER }}
+          XYCLOUD_OIDC_AUDIENCE: ${{ vars.XYCLOUD_OIDC_AUDIENCE || 'otools-ci' }}
+          XYCLOUD_PUBLISHER_ID: ${{ vars.XYCLOUD_PUBLISHER_ID }}
+          OTOOLS_MARKET_API: ${{ vars.OTOOLS_MARKET_API || 'https://otools-api.lingyun.net/api/v1/otools/plugin/publish' }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+          RELEASE_VERSION: ${{ needs.build.outputs.version }}
+          PLUGIN_MANIFEST: release-assets/plugin.json
+          # 单合包（packageMode=0，仅 macos 资产、supportMacos 如实上报）。
+          PLATFORM_PACKAGES: '0'
+          PACK_META: release-assets/meta.json
+        run: node scripts/publish-market.mjs
+
+      - name: 发布摘要
+        env:
+          PUBLISH_ENABLED: ${{ needs.build.outputs.publish_enabled }}
+          MARKET_ENABLED: ${{ needs.build.outputs.market_enabled }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+        run: |
+          printf '### 发布检查完成\n- 正式发布：`%s`\n- 市场提交：`%s`\n- 标签：`%s`\n' "$PUBLISH_ENABLED" "$MARKET_ENABLED" "$RELEASE_TAG" >> "$GITHUB_STEP_SUMMARY"

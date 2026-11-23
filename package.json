@@ -1,0 +1,32 @@
+{
+  "name": "otools-spacelens",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SpaceSniffer-style disk usage treemap viewer for OTools.",
+  "license": "MIT",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 6582 --strictPort",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit --pretty false",
+    "preview": "node scripts/serve-dist.mjs 6583",
+    "pack": "npm run build && node scripts/pack-plugin.mjs && node scripts/verify-plugin.mjs",
+    "verify": "node scripts/verify-plugin.mjs",
+    "test": "node --test scripts/publish-market.test.mjs scripts/release-policy.test.mjs scripts/verify-plugin.test.mjs scripts/i18n-parity.test.mjs",
+    "test:src": "node --test --experimental-strip-types \"src/**/*.test.ts\"",
+    "market:preflight": "node scripts/publish-market.mjs preflight",
+    "smoke": "node scripts/smoke-spacelensd.mjs"
+  },
+  "dependencies": {
+    "otools-plugin-sdk": "^0.4.0",
+    "vue": "3.5.27"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.8",
+    "@vitejs/plugin-vue": "5.2.4",
+    "typescript": "5.9.3",
+    "vite": "6.4.1",
+    "vue-tsc": "3.3.11"
+  }
+}
