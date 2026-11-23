@@ -15,7 +15,7 @@
 | `npm run smoke` | 无宿主端到端：握手 → 建 fixture → 扫描 → SSE batch/done 校验字节总数 → snapshot → 4000 文件大目录取消 |
 | `npm run pack` | 生成 `dist-pack/otools-spacelens-0.1.0.oplg`（7 条目），加固验证全绿（含 sidecar 存在性、support 如实上报、ZIP CRC） |
 | `AUTH_MODE=pat XYCLOUD_PAT=<格式合法值> node scripts/publish-market.mjs preflight` | 市场凭证格式检查通过（未请求市场、未发布） |
-| `npm run test:src` | 21 项前端单测（新增列表排序与筛选口径） |
+| `npm run test:src` | 23 项前端单测（列表排序与筛选、大小色阶深度渐变与描边） |
 | 浏览器 `?mock=1` | 合成树流式渲染，嵌套树图、筛选栏、面包屑、Tooltip、状态栏、动画均正常；大小色阶模式实测：6 档图例 + 矩形按体积着色；列表模式实测：6 列排序/占比/打开按钮、窄面板不溢出、占比与状态栏统计随扫描实时更新 |
 
 ## 未做（需 CI / 真机）

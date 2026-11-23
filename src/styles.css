@@ -97,15 +97,20 @@ button, input, select { font-family: inherit; font-size: inherit; color: inherit
 .btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 .btn.btn-icon { width: 32px; padding: 0; border-radius: 50%; }
 .btn-primary {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--sl-accent) 78%, #fff), color-mix(in srgb, var(--sl-accent) 94%, #000));
-  border-color: color-mix(in srgb, var(--sl-accent) 82%, #000);
+  background: var(--sl-accent);
+  border-color: var(--sl-accent);
+  border-radius: 11px;
   color: #fff;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--sl-accent) 34%, transparent), 0 1px 2px rgba(16, 24, 40, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--sl-accent) 22%, transparent);
 }
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(180deg, var(--sl-accent), color-mix(in srgb, var(--sl-accent) 90%, #000));
-  border-color: color-mix(in srgb, var(--sl-accent) 78%, #000);
-  box-shadow: 0 5px 14px color-mix(in srgb, var(--sl-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--sl-accent) 88%, #000);
+  border-color: color-mix(in srgb, var(--sl-accent) 88%, #000);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--sl-accent) 30%, transparent);
+}
+.btn-primary:active:not(:disabled) {
+  background: color-mix(in srgb, var(--sl-accent) 80%, #000);
+  box-shadow: none;
 }
 html.dark .btn {
   background: color-mix(in srgb, #232b35 88%, transparent);

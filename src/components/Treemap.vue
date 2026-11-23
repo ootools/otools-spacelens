@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { layoutFocus, type LayoutItem } from '../layout/layout-tree.ts';
 import { categoryColor } from '../domain/categories.ts';
-import { contrastTextColor, sizeColor } from '../domain/sizeColors.ts';
+import { contrastTextColor, shadeBorder, sizeShade } from '../domain/sizeColors.ts';
 import { formatBytes } from '../domain/format.ts';
 import type { FilterState, ScanNode } from '../types.ts';
 
@@ -40,7 +40,7 @@ function alpha(hex: string, opacity: number): string {
 function tileStyle(item: LayoutItem) {
   const node = item.node;
   const color = props.colorMode === 'size'
-    ? sizeColor(node.totalSize)
+    ? sizeShade(node.totalSize)
     : node.isDir ? '#6b7c93' : categoryColor(node.category);
   // 大小模式用近实色，色阶一眼可辨；分类模式保留透明度渐变表示体积。
   const opacity = props.colorMode === 'size'
@@ -52,7 +52,7 @@ function tileStyle(item: LayoutItem) {
     width: `${Math.max(0, item.rect.w)}px`,
     height: `${Math.max(0, item.rect.h)}px`,
     background: alpha(color, opacity),
-    borderColor: color,
+    borderColor: props.colorMode === 'size' ? shadeBorder(color) : color,
     color: contrastTextColor(color),
   };
 }

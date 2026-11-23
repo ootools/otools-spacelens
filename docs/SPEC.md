@@ -37,7 +37,7 @@ SSE 事件（具名 + JSON data）：
 - `layout/layout-tree.ts`：只布局当前 focus 的直接子节点，空间足够时再内嵌一层孙辈；同屏矩形上限 2000。
 - 动画：矩形 `left/top/width/height` CSS transition 240ms，新节点 `pop-in`；扫描流式到达时自然呈现「边扫边长」。
 - 视图双模式：方块（treemap）与列表（list），工具栏右上切换；列表支持按名称/类型/大小/修改时间排序，点击行下钻、双击打开所在文件夹，与树图共用筛选与面包屑。
-- 配色双模式（默认「大小」）：`src/domain/sizeColors.ts` 定义 6 个大小区间（<1KB / 1KB–1MB / 1–10MB / 10–100MB / 100MB–1GB / ≥1GB），冷色→暖色区分，顶部有色阶图例；可切回「分类」模式（images / video / audio / docs / archives / code / other / folders，扩展名映射 + 分类配色）。文字颜色按 WCAG 相对亮度自动选深/浅，保证浅色块上可读。
+- 配色双模式（默认「大小」）：`src/domain/sizeColors.ts` 定义 6 个大小区间（<1KB / 1KB–1MB / 1–10MB / 10–100MB / 100MB–1GB / ≥1GB），冷色→暖色区分，同一区间内颜色深度随体积对数增长（越大越深）并以同色描边分隔，避免相邻块糊成一片，顶部有色阶图例；可切回「分类」模式（images / video / audio / docs / archives / code / other / folders，扩展名映射 + 分类配色）。文字颜色按 WCAG 相对亮度自动选深/浅，保证浅色块上可读。
 - 打开文件夹：宿主 `shellOpenPath`（经 `getOtoolsApi()`），浏览器模式降级为复制到剪贴板 + 提示。
 - 主题/i18n 自持：8 语言（zh-CN/en-US/ja-JP/ko-KR/de-DE/ru-RU/es-ES/ar-SA），`?mock=1` 可纯浏览器预览（`&blocked=1` 演示警告）。
 
