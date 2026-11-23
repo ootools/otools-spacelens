@@ -12,7 +12,6 @@ use tokio::sync::broadcast;
 use tokio_util::sync::CancellationToken;
 use walkdir::WalkDir;
 
-pub const MAX_NODES: u64 = 50_000;
 const BATCH_NODES: usize = 256;
 const FLUSH_INTERVAL: Duration = Duration::from_millis(80);
 const HISTORY_LIMIT: usize = 256;
@@ -148,7 +147,6 @@ pub fn run_scan(state: Arc<ScanState>, root: PathBuf) {
         ..Totals::default()
     };
     let mut last_flush = Instant::now();
-    let mut limited = false;
     let mut cancelled = false;
     let mut first = true;
 
@@ -189,10 +187,6 @@ pub fn run_scan(state: Arc<ScanState>, root: PathBuf) {
                     totals.bytes += size;
                 }
                 totals.scanned += 1;
-                if totals.scanned >= MAX_NODES {
-                    limited = true;
-                    break;
-                }
                 if batch.len() >= BATCH_NODES || last_flush.elapsed() >= FLUSH_INTERVAL {
                     flush(&state, &mut batch, totals);
                     last_flush = Instant::now();
@@ -226,21 +220,11 @@ pub fn run_scan(state: Arc<ScanState>, root: PathBuf) {
             "cancelled",
             json!({"durationMs": duration_ms, "totals": totals}),
         );
-    } else if limited {
-        state.set_status(ScanStatus::Done);
-        state.emit(
-            "limit",
-            json!({"maxNodes": MAX_NODES, "path": state.root}),
-        );
-        state.emit(
-            "done",
-            json!({"durationMs": duration_ms, "totals": totals, "partial": true}),
-        );
     } else {
         state.set_status(ScanStatus::Done);
         state.emit(
             "done",
-            json!({"durationMs": duration_ms, "totals": totals, "partial": false}),
+            json!({"durationMs": duration_ms, "totals": totals}),
         );
     }
 }
@@ -255,7 +239,7 @@ pub fn now_millis() -> u64 {
 
 #[cfg(test)]
 mod tests {
-    use super::{MAX_NODES, ScanNode, ScanState, run_scan};
+    use super::{ScanNode, ScanState, run_scan};
     use serde_json::Value;
     use std::fs;
     use std::sync::Arc;
@@ -308,6 +292,12 @@ mod tests {
         assert_eq!(totals.dirs, 2);
         assert_eq!(totals.bytes, 1024 + 2048 + 4096);
         assert_eq!(totals.scanned, 4);
+        // 无节点上限：done 不再带 partial 标记，也没有 limit 事件。
+        let events = state.replay();
+        assert!(!events.iter().any(|(name, _)| name == "limit"));
+        let done = events.iter().find(|(name, _)| name == "done").unwrap().1.clone();
+        let done: Value = serde_json::from_str(&done).unwrap();
+        assert!(done.get("partial").is_none());
     }
 
     #[test]
@@ -329,8 +319,7 @@ mod tests {
     }
 
     #[test]
-    fn node_cap_is_bounded() {
-        assert!(MAX_NODES <= 50_000);
+    fn empty_dir_finishes_cleanly() {
         // 空目录只产生根节点，不能 panic 也不能出错
         let dir = tempfile::tempdir().unwrap();
         let state = Arc::new(ScanState::new(

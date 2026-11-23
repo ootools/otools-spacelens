@@ -34,8 +34,6 @@
   "emptyFolder": "이 폴더는 비어 있습니다",
   "warning": "경고",
   "error": "오류",
-  "partialResult": "부분 결과(노드 한도 도달)",
-  "nodeLimit": "노드 한도에 도달했습니다({count}개)",
   "tooltipSize": "크기",
   "tooltipShare": "비율",
   "hostMissing": "호스트가 sidecar를 지원하지 않습니다",

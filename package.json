@@ -1,11 +1,13 @@
 {
   "name": "otools-spacelens",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "SpaceSniffer-style disk usage treemap viewer for OTools.",
   "license": "MIT",
-  "engines": { "node": ">=22.18" },
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 6582 --strictPort",
     "build": "vue-tsc --noEmit && vite build",

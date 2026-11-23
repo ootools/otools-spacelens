@@ -34,8 +34,6 @@
   "emptyFolder": "Esta carpeta está vacía",
   "warning": "Advertencia",
   "error": "Error",
-  "partialResult": "Resultado parcial (límite de nodos alcanzado)",
-  "nodeLimit": "Límite de nodos alcanzado ({count} nodos)",
   "tooltipSize": "Tamaño",
   "tooltipShare": "Porcentaje",
   "hostMissing": "El host no admite sidecars",

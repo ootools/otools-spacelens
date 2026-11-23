@@ -34,8 +34,6 @@
   "emptyFolder": "该文件夹为空",
   "warning": "警告",
   "error": "错误",
-  "partialResult": "部分结果（已达到节点上限）",
-  "nodeLimit": "已达到节点上限（{count} 个节点）",
   "tooltipSize": "大小",
   "tooltipShare": "占比",
   "hostMissing": "宿主不支持 sidecar",

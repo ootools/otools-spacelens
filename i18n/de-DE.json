@@ -34,8 +34,6 @@
   "emptyFolder": "Dieser Ordner ist leer",
   "warning": "Warnung",
   "error": "Fehler",
-  "partialResult": "Teilergebnis (Node-Limit erreicht)",
-  "nodeLimit": "Node-Limit erreicht ({count} Knoten)",
   "tooltipSize": "Größe",
   "tooltipShare": "Anteil",
   "hostMissing": "Host unterstützt keine Sidecars",

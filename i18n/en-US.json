@@ -34,8 +34,6 @@
   "emptyFolder": "This folder is empty",
   "warning": "Warning",
   "error": "Error",
-  "partialResult": "Partial result (node limit reached)",
-  "nodeLimit": "Node limit reached ({count} nodes)",
   "tooltipSize": "Size",
   "tooltipShare": "Share of view",
   "hostMissing": "Host does not support sidecars",

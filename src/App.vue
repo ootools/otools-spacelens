@@ -86,7 +86,6 @@ function makeHandlers(): ScanHandlers {
       status.value = 'done';
       duration.value = payload.durationMs;
       totals.value = { ...payload.totals };
-      if (payload.partial) message.value = t('partialResult');
     },
     cancelled: (payload) => {
       scanning.value = false;

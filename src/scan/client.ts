@@ -10,7 +10,7 @@ export interface ScanStarted {
 export interface ScanDone {
   durationMs: number;
   totals: ScanTotals;
-  partial: boolean;
+
 }
 
 export interface ScanHandlers {

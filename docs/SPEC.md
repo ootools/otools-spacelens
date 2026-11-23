@@ -26,10 +26,9 @@ SSE 事件（具名 + JSON data）：
 - `batch` `{seq, nodes:[{id, parent_id, name, path, is_dir, size, mtime}]}`，每 80ms 或 256 节点推送一次
 - `progress` `{files, dirs, bytes, scanned}`
 - `warning` `{path, kind:"permission"|"io", message}`
-- `limit` `{maxNodes}`（50k 上限，部分结果，非错误）
-- `done` `{durationMs, totals, partial}` / `cancelled` `{durationMs, totals}` / `error` `{message}`
+- `done` `{durationMs, totals}` / `cancelled` `{durationMs, totals}` / `error` `{message}`
 
-扫描细节：`walkdir` 顺序遍历、`sort_by_file_name()` 稳定排序、`follow_links(false)`（符号链接仅作叶节点，不跟随、不成环）。权限/IO 错误逐条发 `warning` 后继续。目录 delta 的 `size=0`，大小由前端沿祖先链累加；节点上限 50,000，sidecar 退出时取消所有活动扫描。
+扫描细节：`walkdir` 顺序遍历、`sort_by_file_name()` 稳定排序、`follow_links(false)`（符号链接仅作叶节点，不跟随、不成环）。权限/IO 错误逐条发 `warning` 后继续。目录 delta 的 `size=0`，大小由前端沿祖先链累加；不设节点上限；扫描完整遍历整棵目录树，sidecar 退出时取消所有活动扫描。
 
 ## 前端
 

@@ -34,8 +34,6 @@
   "emptyFolder": "هذا المجلد فارغ",
   "warning": "تحذير",
   "error": "خطأ",
-  "partialResult": "نتيجة جزئية (تم بلوغ حد العقد)",
-  "nodeLimit": "تم بلوغ حد العقد ({count} عقدة)",
   "tooltipSize": "الحجم",
   "tooltipShare": "النسبة",
   "hostMissing": "المضيف لا يدعم sidecars",

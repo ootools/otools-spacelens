@@ -40,7 +40,7 @@ export function createMockScanClient(blocked = false): ScanClient {
     }
     if (cursor >= nodes.length) {
       stop();
-      handlers.done?.({ durationMs: cursor * 3, totals: { ...totals }, partial: false });
+      handlers.done?.({ durationMs: cursor * 3, totals: { ...totals } });
     }
   };
 
@@ -57,7 +57,7 @@ export function createMockScanClient(blocked = false): ScanClient {
     },
     async cancelScan() {
       stop();
-      handlers?.cancelled?.({ durationMs: 0, totals: { ...totals }, partial: true });
+      handlers?.cancelled?.({ durationMs: 0, totals: { ...totals } });
     },
     async snapshot() {
       return { status: timer ? 'running' : 'done', totals: { ...totals } };
