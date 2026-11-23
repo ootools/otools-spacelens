@@ -53,5 +53,6 @@
   "colorSize": "サイズ",
   "colorCategory": "カテゴリ",
   "sizeLegend": "サイズ目盛り",
-  "mockPickHint": "プレビューは内蔵サンプルを使用します。実際のフォルダー選択は OTools ホストで行ってください"
+  "mockPickHint": "プレビューは内蔵サンプルを使用します。実際のフォルダー選択は OTools ホストで行ってください",
+  "filterTitle": "フィルターと表示"
 }

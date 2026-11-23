@@ -53,5 +53,6 @@
   "colorSize": "Größe",
   "colorCategory": "Kategorie",
   "sizeLegend": "Größenskala",
-  "mockPickHint": "Die Vorschau nutzt ein Beispiel; echte Ordner können im OTools-Host gewählt werden"
+  "mockPickHint": "Die Vorschau nutzt ein Beispiel; echte Ordner können im OTools-Host gewählt werden",
+  "filterTitle": "Filter & Ansicht"
 }

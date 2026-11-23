@@ -53,5 +53,6 @@
   "colorSize": "Tamaño",
   "colorCategory": "Categoría",
   "sizeLegend": "Escala de tamaño",
-  "mockPickHint": "La vista previa usa una muestra; abre en el host de OTools para elegir una carpeta real"
+  "mockPickHint": "La vista previa usa una muestra; abre en el host de OTools para elegir una carpeta real",
+  "filterTitle": "Filtro y vista"
 }

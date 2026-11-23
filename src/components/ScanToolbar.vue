@@ -50,9 +50,9 @@ const emit = defineEmits<{
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
+  padding: 7px 12px;
   border-bottom: 1px solid var(--sl-border);
-  background: var(--sl-bg);
+  background: linear-gradient(180deg, var(--sl-bg), var(--sl-panel));
   flex-shrink: 0;
 }
 .path {
