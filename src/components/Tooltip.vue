@@ -48,6 +48,16 @@ const color = computed(() => categoryColor(props.node.category));
 .line { display: flex; justify-content: space-between; color: var(--sl-text-2); margin: 3px 0; }
 .line b { color: var(--sl-text); }
 .path { margin: 8px 0; word-break: break-all; color: var(--sl-text-3); }
-.open { width: 100%; height: 26px; border: 1px solid var(--sl-border); border-radius: 5px; background: var(--sl-panel); cursor: pointer; }
-.open:hover { background: var(--sl-hover); }
+.open {
+  width: 100%;
+  height: 29px;
+  border: 1px solid var(--sl-border);
+  border-radius: 7px;
+  background: var(--sl-panel);
+  color: var(--sl-text-2);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+.open:hover { background: var(--sl-accent); border-color: var(--sl-accent); color: #fff; }
 </style>

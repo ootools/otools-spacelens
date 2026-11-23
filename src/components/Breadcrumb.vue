@@ -31,8 +31,10 @@ const emit = defineEmits<{ navigate: [node: ScanNode] }>();
   background: none;
   color: var(--sl-text-2);
   cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  transition: background 140ms ease, color 140ms ease;
 }
 .crumb:hover { color: var(--sl-accent); background: var(--sl-hover); }
 .sep { color: var(--sl-text-3); }

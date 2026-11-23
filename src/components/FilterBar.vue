@@ -101,33 +101,53 @@ const sizeOptions = [
 .divider { width: 1px; height: 20px; background: var(--sl-border); }
 .modes {
   display: inline-flex;
+  gap: 2px;
+  height: 32px;
+  padding: 3px;
   border: 1px solid var(--sl-border);
-  border-radius: 6px;
-  overflow: hidden;
-  height: 30px;
+  border-radius: 8px;
+  background: var(--sl-panel);
 }
 .modes button {
   border: 0;
-  background: var(--sl-bg);
-  padding: 0 10px;
+  background: transparent;
+  padding: 0 12px;
+  border-radius: 6px;
   cursor: pointer;
   color: var(--sl-text-2);
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
 }
-.modes button.active { background: var(--sl-accent); color: #fff; }
-.modes button:not(.active):hover { background: var(--sl-hover); }
-.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.modes button.active {
+  background: var(--sl-bg);
+  color: var(--sl-accent);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12);
+}
+.modes button:not(.active):hover { color: var(--sl-text); background: var(--sl-hover); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  height: 24px;
-  padding: 0 8px;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
   border: 1px solid var(--sl-border);
-  border-radius: 12px;
+  border-radius: 13px;
   background: var(--sl-bg);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11.5px;
+  color: var(--sl-text-2);
+  transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease, border-color 140ms ease;
 }
-.chip.off { opacity: 0.4; text-decoration: line-through; }
-.dot { width: 8px; height: 8px; border-radius: 2px; background: var(--chip); }
+.chip:hover { transform: translateY(-1px); border-color: var(--chip); box-shadow: 0 2px 6px rgba(16, 24, 40, 0.1); }
+.chip.off { opacity: 0.38; background: var(--sl-panel); }
+.chip.off:hover { opacity: 0.7; }
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  background: var(--chip);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--chip) 22%, transparent);
+}
 </style>
