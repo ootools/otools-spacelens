@@ -54,5 +54,7 @@
   "colorCategory": "Category",
   "sizeLegend": "Size scale",
   "mockPickHint": "Preview uses a built-in sample; open in the OTools host to pick a real folder",
-  "filterTitle": "Filter & View"
+  "filterTitle": "Filter & View",
+  "toggleSidebar": "Show filters",
+  "collapseSidebar": "Hide sidebar"
 }

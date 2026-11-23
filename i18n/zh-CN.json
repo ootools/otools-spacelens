@@ -54,5 +54,7 @@
   "colorCategory": "分类",
   "sizeLegend": "大小色阶",
   "mockPickHint": "预览模式使用内置示例目录；请在 OTools 宿主中打开以选择真实文件夹",
-  "filterTitle": "筛选与视图"
+  "filterTitle": "筛选与视图",
+  "toggleSidebar": "展开筛选侧栏",
+  "collapseSidebar": "收起侧栏"
 }

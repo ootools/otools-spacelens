@@ -46,6 +46,13 @@ const filters = reactive<FilterState>({
   isolateMatches: false,
 });
 const colorMode = ref<'category' | 'size'>('size');
+const sidebarOpen = ref(false);
+const filterActive = computed(() =>
+  filters.nameQuery.trim() !== '' ||
+  filters.minSizeBytes > 0 ||
+  filters.isolateMatches ||
+  filters.enabled.size !== 8,
+);
 
 const focus = computed<ScanNode | null>(() => {
   void version.value;
@@ -236,6 +243,9 @@ onUnmounted(() => {
     />
     <div class="workspace">
       <FilterBar
+        :open="sidebarOpen"
+        :active="filterActive"
+        @toggle="sidebarOpen = !sidebarOpen"
         v-model:enabled="filters.enabled"
         v-model:min-size-bytes="filters.minSizeBytes"
         v-model:name-query="filters.nameQuery"

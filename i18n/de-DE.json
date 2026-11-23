@@ -54,5 +54,7 @@
   "colorCategory": "Kategorie",
   "sizeLegend": "Größenskala",
   "mockPickHint": "Die Vorschau nutzt ein Beispiel; echte Ordner können im OTools-Host gewählt werden",
-  "filterTitle": "Filter & Ansicht"
+  "filterTitle": "Filter & Ansicht",
+  "toggleSidebar": "Filter anzeigen",
+  "collapseSidebar": "Seitenleiste schließen"
 }

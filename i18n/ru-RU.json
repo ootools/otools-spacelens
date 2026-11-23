@@ -54,5 +54,7 @@
   "colorCategory": "Категория",
   "sizeLegend": "Шкала размера",
   "mockPickHint": "Предпросмотр использует пример; реальную папку можно выбрать в хосте OTools",
-  "filterTitle": "Фильтр и вид"
+  "filterTitle": "Фильтр и вид",
+  "toggleSidebar": "Показать фильтры",
+  "collapseSidebar": "Скрыть панель"
 }

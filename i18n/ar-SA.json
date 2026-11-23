@@ -54,5 +54,7 @@
   "colorCategory": "الفئة",
   "sizeLegend": "مقياس الحجم",
   "mockPickHint": "المعاينة تستخدم عينة مدمجة؛ افتح في مضيف OTools لاختيار مجلد حقيقي",
-  "filterTitle": "التصفية والعرض"
+  "filterTitle": "التصفية والعرض",
+  "toggleSidebar": "إظهار عوامل التصفية",
+  "collapseSidebar": "إخفاء الشريط"
 }
