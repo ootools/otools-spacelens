@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { layoutFocus, type LayoutItem } from '../layout/layout-tree.ts';
 import { categoryColor } from '../domain/categories.ts';
+import { contrastTextColor, sizeColor } from '../domain/sizeColors.ts';
 import { formatBytes } from '../domain/format.ts';
 import type { FilterState, ScanNode } from '../types.ts';
 
@@ -13,6 +14,7 @@ const props = defineProps<{
   total: number;
   query: string;
   tick: number;
+  colorMode: 'category' | 'size';
   t: (key: string, values?: Record<string, string | number>) => string;
 }>();
 const emit = defineEmits<{
@@ -27,9 +29,8 @@ const items = computed<LayoutItem[]>(() => {
   return props.focus ? layoutFocus(props.focus, props.filters, props.width, props.height) : [];
 });
 
-function alpha(hex: string, value: number): string {
-  let a = 0.35 + Math.min(0.6, Math.log10(Math.max(1, value) + 1) / 12);
-  a = Math.min(0.95, a);
+function alpha(hex: string, opacity: number): string {
+  const a = Math.min(0.98, Math.max(0.1, opacity));
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
@@ -37,14 +38,22 @@ function alpha(hex: string, value: number): string {
 }
 
 function tileStyle(item: LayoutItem) {
-  const color = item.node.isDir ? '#6b7c93' : categoryColor(item.node.category);
+  const node = item.node;
+  const color = props.colorMode === 'size'
+    ? sizeColor(node.totalSize)
+    : node.isDir ? '#6b7c93' : categoryColor(node.category);
+  // 大小模式用近实色，色阶一眼可辨；分类模式保留透明度渐变表示体积。
+  const opacity = props.colorMode === 'size'
+    ? 0.9
+    : 0.35 + Math.min(0.6, Math.log10(Math.max(1, node.totalSize) + 1) / 12);
   return {
     left: `${item.rect.x}px`,
     top: `${item.rect.y}px`,
     width: `${Math.max(0, item.rect.w)}px`,
     height: `${Math.max(0, item.rect.h)}px`,
-    background: alpha(color, item.node.totalSize),
+    background: alpha(color, opacity),
     borderColor: color,
+    color: contrastTextColor(color),
   };
 }
 
@@ -120,9 +129,9 @@ function onHover(item: LayoutItem, event: MouseEvent) {
   flex-direction: column;
   gap: 1px;
   padding: 3px 5px;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+  color: inherit;
   font-size: 11px;
+  font-weight: 500;
   line-height: 1.25;
   max-width: 100%;
 }
@@ -131,9 +140,8 @@ function onHover(item: LayoutItem, event: MouseEvent) {
 .nested-label {
   display: block;
   padding: 2px 4px;
-  color: #fff;
+  color: inherit;
   font-size: 10px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

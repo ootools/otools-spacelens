@@ -7,6 +7,7 @@ const props = defineProps<{
   minSizeBytes: number;
   nameQuery: string;
   isolateMatches: boolean;
+  colorMode: 'category' | 'size';
   t: (key: string, values?: Record<string, string | number>) => string;
 }>();
 const emit = defineEmits<{
@@ -14,6 +15,7 @@ const emit = defineEmits<{
   'update:minSizeBytes': [value: number];
   'update:nameQuery': [value: string];
   'update:isolateMatches': [value: boolean];
+  'update:colorMode': [value: 'category' | 'size'];
 }>();
 
 function toggle(id: CategoryId) {
@@ -57,6 +59,16 @@ const sizeOptions = [
         {{ option.key ? t(option.key) : option.label }}
       </option>
     </select>
+    <div class="modes" :title="t('colorBy')">
+      <button
+        :class="{ active: colorMode === 'size' }"
+        @click="emit('update:colorMode', 'size')"
+      >{{ t('colorSize') }}</button>
+      <button
+        :class="{ active: colorMode === 'category' }"
+        @click="emit('update:colorMode', 'category')"
+      >{{ t('colorCategory') }}</button>
+    </div>
     <div class="divider"></div>
     <div class="chips">
       <button
@@ -87,6 +99,22 @@ const sizeOptions = [
 .search { width: 190px; }
 .check { display: inline-flex; align-items: center; gap: 4px; color: var(--sl-text-2); cursor: pointer; }
 .divider { width: 1px; height: 20px; background: var(--sl-border); }
+.modes {
+  display: inline-flex;
+  border: 1px solid var(--sl-border);
+  border-radius: 6px;
+  overflow: hidden;
+  height: 30px;
+}
+.modes button {
+  border: 0;
+  background: var(--sl-bg);
+  padding: 0 10px;
+  cursor: pointer;
+  color: var(--sl-text-2);
+}
+.modes button.active { background: var(--sl-accent); color: #fff; }
+.modes button:not(.active):hover { background: var(--sl-hover); }
 .chips { display: flex; flex-wrap: wrap; gap: 5px; }
 .chip {
   display: inline-flex;

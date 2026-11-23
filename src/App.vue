@@ -12,6 +12,7 @@ import { createMockScanClient } from './mock/scanClient.ts';
 import { allCategoryIds } from './domain/categories.ts';
 import { formatBytes, formatCount, formatDuration } from './domain/format.ts';
 import { applyNodes, breadcrumb, createTree, viewTotals } from './domain/tree.ts';
+import { SIZE_TIERS } from './domain/sizeColors.ts';
 import { useSpaceLensI18n } from './i18n.ts';
 import type { FilterState, ScanNode, ScanTotals, WarningEvent } from './types.ts';
 
@@ -45,6 +46,7 @@ const filters = reactive<FilterState>({
   nameQuery: '',
   isolateMatches: false,
 });
+const colorMode = ref<'category' | 'size'>('size');
 
 const focus = computed<ScanNode | null>(() => {
   void version.value;
@@ -238,9 +240,16 @@ onUnmounted(() => {
       v-model:min-size-bytes="filters.minSizeBytes"
       v-model:name-query="filters.nameQuery"
       v-model:isolate-matches="filters.isolateMatches"
+      v-model:color-mode="colorMode"
       :t="t"
     />
     <Breadcrumb v-if="focus" :trail="trail" :root-label="t('root')" @navigate="navigate" />
+    <div v-if="colorMode === 'size'" class="legend">
+      <span class="legend-title">{{ t('sizeLegend') }}</span>
+      <span v-for="tier in SIZE_TIERS" :key="tier.label" class="legend-item">
+        <i :style="{ background: tier.color }"></i>{{ tier.label }}
+      </span>
+    </div>
     <div ref="container" class="canvas">
       <Treemap
         v-if="focus"
@@ -251,6 +260,7 @@ onUnmounted(() => {
         :total="stats.bytes"
         :query="filters.nameQuery"
         :tick="version"
+        :color-mode="colorMode"
         :t="t"
         @drill="drill"
         @select="select"
@@ -288,6 +298,20 @@ onUnmounted(() => {
 
 <style scoped>
 .app { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--sl-border-soft);
+  background: var(--sl-panel);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.legend-title { color: var(--sl-text-3); }
+.legend-item { display: inline-flex; align-items: center; gap: 4px; color: var(--sl-text-2); white-space: nowrap; }
+.legend-item i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 .canvas { position: relative; flex: 1; min-height: 0; }
 .empty {
   height: 100%;

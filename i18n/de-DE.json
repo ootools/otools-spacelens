@@ -48,5 +48,9 @@
   "items": "Elemente",
   "percent": "{percent}%",
   "filterHint": "Kategorien und Filter verfeinern die Ansicht",
-  "back": "Zurück"
+  "back": "Zurück",
+  "colorBy": "Farben",
+  "colorSize": "Größe",
+  "colorCategory": "Kategorie",
+  "sizeLegend": "Größenskala"
 }

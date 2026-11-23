@@ -48,5 +48,9 @@
   "items": "项",
   "percent": "{percent}%",
   "filterHint": "切换分类与筛选以细化视图",
-  "back": "返回"
+  "back": "返回",
+  "colorBy": "配色",
+  "colorSize": "大小",
+  "colorCategory": "分类",
+  "sizeLegend": "大小色阶"
 }

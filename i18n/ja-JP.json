@@ -48,5 +48,9 @@
   "items": "件",
   "percent": "{percent}%",
   "filterHint": "カテゴリとフィルターで表示を絞り込めます",
-  "back": "戻る"
+  "back": "戻る",
+  "colorBy": "配色",
+  "colorSize": "サイズ",
+  "colorCategory": "カテゴリ",
+  "sizeLegend": "サイズ目盛り"
 }

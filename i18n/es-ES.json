@@ -48,5 +48,9 @@
   "items": "elementos",
   "percent": "{percent}%",
   "filterHint": "Categorías y filtros afinan la vista",
-  "back": "Atrás"
+  "back": "Atrás",
+  "colorBy": "Colores",
+  "colorSize": "Tamaño",
+  "colorCategory": "Categoría",
+  "sizeLegend": "Escala de tamaño"
 }

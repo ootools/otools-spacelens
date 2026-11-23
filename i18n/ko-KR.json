@@ -48,5 +48,9 @@
   "items": "개",
   "percent": "{percent}%",
   "filterHint": "분류와 필터로 보기를 좁힐 수 있습니다",
-  "back": "뒤로"
+  "back": "뒤로",
+  "colorBy": "색상",
+  "colorSize": "크기",
+  "colorCategory": "분류",
+  "sizeLegend": "크기 범위"
 }

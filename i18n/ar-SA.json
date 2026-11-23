@@ -48,5 +48,9 @@
   "items": "عنصر",
   "percent": "{percent}%",
   "filterHint": "الفئات وعوامل التصفية تُحسّن العرض",
-  "back": "رجوع"
+  "back": "رجوع",
+  "colorBy": "الألوان",
+  "colorSize": "الحجم",
+  "colorCategory": "الفئة",
+  "sizeLegend": "مقياس الحجم"
 }

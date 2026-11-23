@@ -48,5 +48,9 @@
   "items": "items",
   "percent": "{percent}%",
   "filterHint": "Toggle categories and filters to refine the view",
-  "back": "Back"
+  "back": "Back",
+  "colorBy": "Colors",
+  "colorSize": "Size",
+  "colorCategory": "Category",
+  "sizeLegend": "Size scale"
 }

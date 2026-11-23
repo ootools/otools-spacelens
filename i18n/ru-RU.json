@@ -48,5 +48,9 @@
   "items": "элементов",
   "percent": "{percent}%",
   "filterHint": "Категории и фильтры уточняют вид",
-  "back": "Назад"
+  "back": "Назад",
+  "colorBy": "Цвета",
+  "colorSize": "Размер",
+  "colorCategory": "Категория",
+  "sizeLegend": "Шкала размера"
 }
