@@ -52,5 +52,6 @@
   "colorBy": "Farben",
   "colorSize": "Größe",
   "colorCategory": "Kategorie",
-  "sizeLegend": "Größenskala"
+  "sizeLegend": "Größenskala",
+  "mockPickHint": "Die Vorschau nutzt ein Beispiel; echte Ordner können im OTools-Host gewählt werden"
 }

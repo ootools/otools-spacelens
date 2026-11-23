@@ -133,7 +133,7 @@ async function startScan(target?: string) {
 
 async function pickFolder() {
   if (isMock) {
-    await startScan('/Users/demo/Projects');
+    message.value = t('mockPickHint');
     return;
   }
   const picked = await adapter.pickFolder();

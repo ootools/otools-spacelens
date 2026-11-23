@@ -52,5 +52,6 @@
   "colorBy": "الألوان",
   "colorSize": "الحجم",
   "colorCategory": "الفئة",
-  "sizeLegend": "مقياس الحجم"
+  "sizeLegend": "مقياس الحجم",
+  "mockPickHint": "المعاينة تستخدم عينة مدمجة؛ افتح في مضيف OTools لاختيار مجلد حقيقي"
 }

@@ -52,5 +52,6 @@
   "colorBy": "Colors",
   "colorSize": "Size",
   "colorCategory": "Category",
-  "sizeLegend": "Size scale"
+  "sizeLegend": "Size scale",
+  "mockPickHint": "Preview uses a built-in sample; open in the OTools host to pick a real folder"
 }

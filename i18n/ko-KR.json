@@ -52,5 +52,6 @@
   "colorBy": "색상",
   "colorSize": "크기",
   "colorCategory": "분류",
-  "sizeLegend": "크기 범위"
+  "sizeLegend": "크기 범위",
+  "mockPickHint": "미리 보기는 내장 샘플을 사용합니다. 실제 폴더 선택은 OTools 호스트에서 하세요"
 }
