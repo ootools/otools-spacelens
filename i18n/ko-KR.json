@@ -54,5 +54,14 @@
   "mockPickHint": "미리 보기는 내장 샘플을 사용합니다. 실제 폴더 선택은 OTools 호스트에서 하세요",
   "filterTitle": "필터 및 보기",
   "toggleSidebar": "필터 열기",
-  "collapseSidebar": "사이드바 닫기"
+  "collapseSidebar": "사이드바 닫기",
+  "viewTreemap": "트리맵 보기",
+  "viewList": "목록 보기",
+  "columnName": "이름",
+  "columnType": "유형",
+  "columnSize": "크기",
+  "columnShare": "비율",
+  "columnModified": "수정일",
+  "listTruncated": "처음 {count}개만 표시",
+  "openLocation": "포함된 폴더 열기"
 }

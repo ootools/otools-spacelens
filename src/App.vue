@@ -4,6 +4,7 @@ import ScanToolbar from './components/ScanToolbar.vue';
 import FilterBar from './components/FilterBar.vue';
 import Breadcrumb from './components/Breadcrumb.vue';
 import Treemap from './components/Treemap.vue';
+import ListView from './components/ListView.vue';
 import Tooltip from './components/Tooltip.vue';
 import { createHostAdapter } from './host/adapter.ts';
 import type { SidecarConnection } from './host/service.ts';
@@ -46,6 +47,7 @@ const filters = reactive<FilterState>({
   isolateMatches: false,
 });
 const colorMode = ref<'category' | 'size'>('size');
+const viewMode = ref<'treemap' | 'list'>('treemap');
 const sidebarOpen = ref(false);
 const filterActive = computed(() =>
   filters.nameQuery.trim() !== '' ||
@@ -61,7 +63,11 @@ const focus = computed<ScanNode | null>(() => {
   return store.nodes.get(focusId.value) ?? store.root;
 });
 const trail = computed(() => (focus.value ? breadcrumb(focus.value) : []));
-const stats = computed(() => (focus.value ? viewTotals(focus.value, filters) : { bytes: 0, files: 0, dirs: 0 }));
+const stats = computed(() => {
+  // focus 每次都返回同一个根对象引用，必须显式依赖 version 才会随扫描重算。
+  void version.value;
+  return focus.value ? viewTotals(focus.value, filters) : { bytes: 0, files: 0, dirs: 0 };
+});
 const elapsed = computed(() => (duration.value ? formatDuration(duration.value) : ''));
 const canScan = computed(() => Boolean(path.value || isMock));
 const selected = computed(() => {
@@ -155,6 +161,11 @@ async function cancelScan() {
 }
 let activeScanId = '';
 
+function setView(mode: 'treemap' | 'list') {
+  viewMode.value = mode;
+  hover.value = null;
+}
+
 function drill(node: ScanNode) {
   focusId.value = node.id;
   selectedId.value = null;
@@ -233,12 +244,14 @@ onUnmounted(() => {
       :scanning="scanning"
       :can-scan="canScan"
       :elapsed="elapsed"
+      :view-mode="viewMode"
       :t="t"
       @pick="pickFolder"
       @scan="startScan()"
       @cancel="cancelScan"
       @open="openNode()"
       @up="up"
+      @set-view="setView"
     />
     <div class="workspace">
       <FilterBar
@@ -256,7 +269,7 @@ onUnmounted(() => {
         <Breadcrumb v-if="focus" :trail="trail" :root-label="t('root')" @navigate="navigate" />
         <div ref="container" class="canvas">
           <Treemap
-            v-if="focus"
+            v-if="focus && viewMode === 'treemap'"
             :focus="focus"
             :filters="filters"
             :width="width"
@@ -270,6 +283,17 @@ onUnmounted(() => {
             @select="select"
             @open="openNode"
             @hover="hover = $event"
+          />
+          <ListView
+            v-else-if="focus && viewMode === 'list'"
+            :focus="focus"
+            :filters="filters"
+            :tick="version"
+            :total="stats.bytes"
+            :t="t"
+            @drill="drill"
+            @select="select"
+            @open="openNode"
           />
           <div v-else class="empty">
             <b>{{ t('noData') }}</b>

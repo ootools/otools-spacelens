@@ -54,5 +54,14 @@
   "mockPickHint": "预览模式使用内置示例目录；请在 OTools 宿主中打开以选择真实文件夹",
   "filterTitle": "筛选与视图",
   "toggleSidebar": "展开筛选侧栏",
-  "collapseSidebar": "收起侧栏"
+  "collapseSidebar": "收起侧栏",
+  "viewTreemap": "方块视图",
+  "viewList": "列表视图",
+  "columnName": "名称",
+  "columnType": "类型",
+  "columnSize": "大小",
+  "columnShare": "占比",
+  "columnModified": "修改时间",
+  "listTruncated": "仅显示前 {count} 项",
+  "openLocation": "打开所在文件夹"
 }

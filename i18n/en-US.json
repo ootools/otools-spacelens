@@ -54,5 +54,14 @@
   "mockPickHint": "Preview uses a built-in sample; open in the OTools host to pick a real folder",
   "filterTitle": "Filter & View",
   "toggleSidebar": "Show filters",
-  "collapseSidebar": "Hide sidebar"
+  "collapseSidebar": "Hide sidebar",
+  "viewTreemap": "Treemap view",
+  "viewList": "List view",
+  "columnName": "Name",
+  "columnType": "Type",
+  "columnSize": "Size",
+  "columnShare": "Share",
+  "columnModified": "Modified",
+  "listTruncated": "Showing first {count} items",
+  "openLocation": "Open containing folder"
 }

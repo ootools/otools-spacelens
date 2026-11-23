@@ -54,5 +54,14 @@
   "mockPickHint": "Die Vorschau nutzt ein Beispiel; echte Ordner können im OTools-Host gewählt werden",
   "filterTitle": "Filter & Ansicht",
   "toggleSidebar": "Filter anzeigen",
-  "collapseSidebar": "Seitenleiste schließen"
+  "collapseSidebar": "Seitenleiste schließen",
+  "viewTreemap": "Baumdiagramm",
+  "viewList": "Listenansicht",
+  "columnName": "Name",
+  "columnType": "Typ",
+  "columnSize": "Größe",
+  "columnShare": "Anteil",
+  "columnModified": "Geändert",
+  "listTruncated": "Nur erste {count} Einträge",
+  "openLocation": "Ordner öffnen"
 }

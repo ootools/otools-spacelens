@@ -54,5 +54,14 @@
   "mockPickHint": "المعاينة تستخدم عينة مدمجة؛ افتح في مضيف OTools لاختيار مجلد حقيقي",
   "filterTitle": "التصفية والعرض",
   "toggleSidebar": "إظهار عوامل التصفية",
-  "collapseSidebar": "إخفاء الشريط"
+  "collapseSidebar": "إخفاء الشريط",
+  "viewTreemap": "عرض الشجرة",
+  "viewList": "عرض القائمة",
+  "columnName": "الاسم",
+  "columnType": "النوع",
+  "columnSize": "الحجم",
+  "columnShare": "النسبة",
+  "columnModified": "التعديل",
+  "listTruncated": "عرض أول {count} عنصر",
+  "openLocation": "فتح المجلد"
 }

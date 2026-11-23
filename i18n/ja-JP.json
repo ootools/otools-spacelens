@@ -54,5 +54,14 @@
   "mockPickHint": "プレビューは内蔵サンプルを使用します。実際のフォルダー選択は OTools ホストで行ってください",
   "filterTitle": "フィルターと表示",
   "toggleSidebar": "フィルターを開く",
-  "collapseSidebar": "サイドバーを閉じる"
+  "collapseSidebar": "サイドバーを閉じる",
+  "viewTreemap": "ツリーマップ",
+  "viewList": "リスト表示",
+  "columnName": "名前",
+  "columnType": "種類",
+  "columnSize": "サイズ",
+  "columnShare": "割合",
+  "columnModified": "更新日",
+  "listTruncated": "先頭の {count} 件のみ表示",
+  "openLocation": "フォルダーを開く"
 }

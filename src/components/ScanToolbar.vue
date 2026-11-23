@@ -4,6 +4,7 @@ defineProps<{
   scanning: boolean;
   canScan: boolean;
   elapsed: string;
+  viewMode: 'treemap' | 'list';
   t: (key: string, values?: Record<string, string | number>) => string;
 }>();
 const emit = defineEmits<{
@@ -12,6 +13,7 @@ const emit = defineEmits<{
   cancel: [];
   open: [];
   up: [];
+  setView: [mode: 'treemap' | 'list'];
 }>();
 </script>
 
@@ -42,6 +44,22 @@ const emit = defineEmits<{
     </button>
     <div class="spacer"></div>
     <span class="elapsed">{{ elapsed }}</span>
+    <div class="views">
+      <button
+        :class="{ active: viewMode === 'treemap' }"
+        :title="t('viewTreemap')"
+        @click="emit('setView', 'treemap')"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1" /><rect x="13" y="3" width="8" height="5" rx="1" /><rect x="13" y="10" width="8" height="11" rx="1" /><rect x="3" y="13" width="8" height="8" rx="1" /></svg>
+      </button>
+      <button
+        :class="{ active: viewMode === 'list' }"
+        :title="t('viewList')"
+        @click="emit('setView', 'list')"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" /></svg>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -78,4 +96,28 @@ const emit = defineEmits<{
   border-radius: 6px;
   background: var(--sl-panel);
 }
+.views {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--sl-border);
+  border-radius: 9px;
+  background: var(--sl-panel);
+}
+.views button {
+  width: 26px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sl-text-3);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, box-shadow 140ms ease;
+}
+.views button.active { background: var(--sl-bg); color: var(--sl-accent); box-shadow: 0 1px 3px rgba(16, 24, 40, .12); }
+.views button:not(.active):hover { color: var(--sl-text); background: var(--sl-hover); }
+.views svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 </style>

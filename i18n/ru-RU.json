@@ -54,5 +54,14 @@
   "mockPickHint": "Предпросмотр использует пример; реальную папку можно выбрать в хосте OTools",
   "filterTitle": "Фильтр и вид",
   "toggleSidebar": "Показать фильтры",
-  "collapseSidebar": "Скрыть панель"
+  "collapseSidebar": "Скрыть панель",
+  "viewTreemap": "Схема",
+  "viewList": "Список",
+  "columnName": "Имя",
+  "columnType": "Тип",
+  "columnSize": "Размер",
+  "columnShare": "Доля",
+  "columnModified": "Изменён",
+  "listTruncated": "Показаны первые {count}",
+  "openLocation": "Открыть папку"
 }

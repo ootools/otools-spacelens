@@ -54,5 +54,14 @@
   "mockPickHint": "La vista previa usa una muestra; abre en el host de OTools para elegir una carpeta real",
   "filterTitle": "Filtro y vista",
   "toggleSidebar": "Mostrar filtros",
-  "collapseSidebar": "Ocultar panel"
+  "collapseSidebar": "Ocultar panel",
+  "viewTreemap": "Vista de árbol",
+  "viewList": "Vista de lista",
+  "columnName": "Nombre",
+  "columnType": "Tipo",
+  "columnSize": "Tamaño",
+  "columnShare": "Porcentaje",
+  "columnModified": "Modificado",
+  "listTruncated": "Mostrando los primeros {count}",
+  "openLocation": "Abrir carpeta"
 }
